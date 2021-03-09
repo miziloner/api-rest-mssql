@@ -6,3 +6,9 @@ npm-debug.log
 .env
 .vscode
 .DS_Store
+workspace.xml
+.idea/vcs.xml
+.idea/modules.xml
+.idea/misc.xml
+.idea/api-rest-mssql.iml
+.idea/.gitignore
