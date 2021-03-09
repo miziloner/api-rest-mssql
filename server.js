@@ -14,6 +14,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
     database: 'MX_FuelPrice_Everis',
     port: 8433
 };*/
+
+
 var config = {
     user: 'dna-admin',
     password: '3^WCD9Zxj^bN',
