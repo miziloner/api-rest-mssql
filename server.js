@@ -2,8 +2,13 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const path = require("path");
 const app = express();
-var sql = require("mssql");
+const sql = require("mssql");
+const db = require("./db/db");
 
+db.sayHello();
+db.connect(getDBconfig, function (err) {
+    (err) ? error(err) : success();
+});
 
 app.use(bodyParser.urlencoded({ extended: true }));
 //app.use('/api', router);
@@ -15,7 +20,36 @@ app.use(bodyParser.urlencoded({ extended: true }));
     database: 'MX_FuelPrice_Everis',
     port: 8433
 };*/
+function error(err) {
+    console.log("Unable to connect to database");
+    process.exit(1);
+};
 
+function getDBconfig() {
+    return {
+        user: 'usreveris',
+        password: 'UEverS#21',
+        server: 'h2918c01.hyperfive.com',
+        database: 'MX_FuelPrice_Everis',
+        port: 8433
+
+    }
+}
+
+function success() {
+    console.log("Connected to a database");
+    app.listen(5000, function () {
+        console.log('Server is running..');
+    });
+}
+
+var config1 = {
+    user: 'usreveris',
+    password: 'UEverS#21',
+    server: 'h2918c01.hyperfive.com',
+    database: 'MX_FuelPrice_Everis',
+    port: 8433
+};
 
 var config = {
     user: 'dna-admin',
@@ -25,8 +59,9 @@ var config = {
     port: 1433
 };
 
+/*
 app.post('/post-test', (req, res) => {
-    id_cre = console.log('el body:', req.body);
+    console.log('el body:', req.body);
     //id_cre = res.send(req.params.id_cre)
     //id_cre = "PL/4771/EXP/ES/2015"
     sql.connect(config, function (err) {
@@ -73,4 +108,4 @@ app.post('/api/cre/:cre', (req, res) => {
 var server = app.listen(5000, function () {
     console.log('Server is running..');
 });
-
+*/
