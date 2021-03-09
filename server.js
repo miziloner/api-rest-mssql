@@ -22,7 +22,6 @@ var config = {
     port: 1433
 };
 
-
 app.post('/post-test', (req, res) => {
     id_cre = console.log('el body:', req.body);
     //id_cre = res.send(req.params.id_cre)
