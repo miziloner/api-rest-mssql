@@ -4,6 +4,7 @@ const path = require("path");
 const app = express();
 var sql = require("mssql");
 
+
 app.use(bodyParser.urlencoded({ extended: true }));
 //app.use('/api', router);
 // config for your database
