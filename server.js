@@ -3,14 +3,34 @@ const bodyParser = require('body-parser');
 const path = require("path");
 const app = express();
 const sql = require("mssql");
-const db = require("./db/db");
-
-db.sayHello();
-db.connect(getDBconfig, function (err) {
-    (err) ? error(err) : success();
-});
+const db = require("./db");
+const setRouter = require("./routes");
 
 app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use("/", setRouter);
+app.listen(5000, function () {
+    console.log('Server is running..');
+});
+
+/*db.connect(getDBconfig(), function (err) {
+    (err) ? error(err) : success();
+});*/
+
+
+function error(err) {
+    console.log("Unable to connect to database" + err);
+    process.exit(1);
+};
+
+/*function success() {
+    console.log("Connected to a database");
+    app.listen(5000, function () {
+        console.log('Server is running..');
+    });
+}*/
+
+
 //app.use('/api', router);
 // config for your database
 /*var config = {
@@ -20,28 +40,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
     database: 'MX_FuelPrice_Everis',
     port: 8433
 };*/
-function error(err) {
-    console.log("Unable to connect to database");
-    process.exit(1);
-};
 
-function getDBconfig() {
-    return {
-        user: 'usreveris',
-        password: 'UEverS#21',
-        server: 'h2918c01.hyperfive.com',
-        database: 'MX_FuelPrice_Everis',
-        port: 8433
 
-    }
-}
 
-function success() {
-    console.log("Connected to a database");
-    app.listen(5000, function () {
-        console.log('Server is running..');
-    });
-}
 
 var config1 = {
     user: 'usreveris',
