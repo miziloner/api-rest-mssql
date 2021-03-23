@@ -9,7 +9,7 @@ const setRouter = require("./routes");
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use("/", setRouter);
-app.use("/api/getid",setRouter);
+app.use("/api/getid", setRouter);
 app.listen(5000, function () {
     console.log('Server is running..');
 });

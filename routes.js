@@ -1,6 +1,7 @@
-const express = require("express")
+const express = require("express");
+const { pool } = require("mssql");
 const router = express.Router()
-const { poolPromise, poolPromise_everis } = require("./db")
+const { poolPromise, poolPromise_everis, sql } = require("./db")
 
 /*router.get("/", async (req, res) => {
     try {
@@ -17,20 +18,37 @@ const { poolPromise, poolPromise_everis } = require("./db")
     console.log("Hola mundo")*/
 //});*/
 
+
 router.post('/api/getid', async (req, res) => {
     const usn = req.body.usn_id_usuario
-    const num = await getId(usn, res)
+    // let numero = await getId(usn)
+    const getid = () => {
+        getId(usn).then(result => {
+            console.log("..", result);
+        });
 
-    console.log("print num", num)
+    };
+    getid();
 
-    if (num != undefined) {
-        getCompetitors(num)
-    } else {
-        res.end("Response not valid ")
-    }
+
+
+
+    /*getId(usn).then(b => {
+        console.log("..", b)
+    })*/
+
+    /*  console.log("print num", num)
+  
+      if (num != undefined) {
+          getCompetitors(num).then(x => {
+              console.log(x)
+          })
+      } else {
+          res.end("Response not valid ")
+      }*/
 });
 
-async function getId(usn, res) {
+/*async function getId(usn, res) {
     try {
         const pool = await poolPromise
         const result = pool.request().query("select USN_EST_CODIGO ,USN_ID_USUARIO ,USN_MCL_CODIGO, est_numero_permiso from FP_UsuariosNegocios inner join FP_Estacion fe on usn_est_codigo= fe.EST_CODIGO where USN_ID_USUARIO = '" + usn + "'", function (err, recordset) {
@@ -42,16 +60,29 @@ async function getId(usn, res) {
     } catch (err) {
         console.log(err)
     }
+}*/
+
+
+var getId = async function (usn) {
+    const pool = await poolPromise
+    pool.request().query("select USN_EST_CODIGO ,USN_ID_USUARIO ,USN_MCL_CODIGO, est_numero_permiso from FP_UsuariosNegocios inner join FP_Estacion fe on usn_est_codigo= fe.EST_CODIGO where USN_ID_USUARIO = '" + usn + "'").then(result => {
+        let est_numero_permiso = result.recordset[0].est_numero_permiso;
+        return est_numero_permiso;
+    })
+
 }
 
-async function getCompetitors(x) {
+
+
+async function getCompetitors(x, err) {
     try {
         const pool2 = poolPromise_everis
-        const result2 = pool2.request().query("select * from dbo.Competitors where est_numero_permiso ='" + x + "'", function (err, recordset) {
-            if (err) console.log(err)
-            console.log(recordset)
-            return recordset
-        })
+        pool2.request().query("select * from dbo.Competitors where est_numero_permiso ='" + x + "'",
+            function (err, recordset) {
+                if (err) console.log(err)
+                console.log(recordset)
+                return recordset
+            })
     } catch {
         console.log(err)
     }
