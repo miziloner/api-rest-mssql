@@ -28,7 +28,8 @@ router.post('/api/getid', async (req, res) => {
         });
 
     };
-    getid();
+    getCompetitors(getid());
+    //getid();
 
 
 
@@ -65,14 +66,15 @@ router.post('/api/getid', async (req, res) => {
 
 var getId = async function (usn) {
     const pool = await poolPromise
-    pool.request().query("select USN_EST_CODIGO ,USN_ID_USUARIO ,USN_MCL_CODIGO, est_numero_permiso from FP_UsuariosNegocios inner join FP_Estacion fe on usn_est_codigo= fe.EST_CODIGO where USN_ID_USUARIO = '" + usn + "'").then(result => {
-        let est_numero_permiso = result.recordset[0].est_numero_permiso;
-        return est_numero_permiso;
-    })
-
-}
-
-
+    const fin = pool.request().query("select USN_EST_CODIGO ,USN_ID_USUARIO ,USN_MCL_CODIGO, est_numero_permiso from FP_UsuariosNegocios inner join FP_Estacion fe on usn_est_codigo= fe.EST_CODIGO where USN_ID_USUARIO = '" + usn + "'")
+        .then(result => {
+            let est_numero_permiso = result.recordset[0].est_numero_permiso;
+            //console.log(est_numero_permiso)
+            //return est_numero_permiso;
+            return est_numero_permiso
+        })
+    return fin
+};
 
 async function getCompetitors(x, err) {
     try {
